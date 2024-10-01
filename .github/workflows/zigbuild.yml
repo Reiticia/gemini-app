@@ -34,7 +34,7 @@ jobs:
         run: cargo install cargo-zigbuild
       - uses: taiki-e/upload-rust-binary-action@v1
         with:
-          manifest-path: ./gemini-app/Cargo.toml
+          manifest-path: ./Cargo.toml
           bin: gemini
           target: ${{ matrix.target }}
           build-tool: ${{ matrix.build-tool }}
