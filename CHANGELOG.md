@@ -15,6 +15,10 @@
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
 
+# 0.4.8
+
+test
+
 # Version 0.4.0 (2024-09-22)
 
 1. add gemini image analysis in application.
