@@ -15,11 +15,12 @@ jobs:
           submodules: recursive
       - uses: taiki-e/create-gh-release-action@v1
         with:
-          changelog: CHANGELOG.MD
+          changelog: CHANGELOG.md
           branch: main
           draft: true
           token: ${{ secrets.GITHUB_TOKEN }}
   upload-assets:
+    needs: create-release
     strategy:
       matrix:
         include:
