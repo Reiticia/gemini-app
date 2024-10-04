@@ -76,7 +76,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: ${{ needs.read-changelog.outputs.title }}
-          body: ./product/body.txt
+          body_path: ./product/body.txt
           draft: false
           fail_on_unmatched_files: true
           prerelease: false
