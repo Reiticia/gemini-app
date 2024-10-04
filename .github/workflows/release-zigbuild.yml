@@ -29,7 +29,6 @@ jobs:
     needs: build-all
     outputs:
       title: ${{ steps.read.outputs.title }}
-      body: ${{ steps.read.outputs.body }}
     steps:
       - uses: actions/checkout@v4
         with:
@@ -39,7 +38,11 @@ jobs:
         run: |
           echo "title=$(awk '/^#[^#]/{sub(/^# /, ""); print; exit}' CHANGELOG.md)" >> "$GITHUB_OUTPUT"
           echo "$(awk '/^#[^#]/{if (flag) exit; flag=1; next} flag {if ($0 ~ /\S/) {print; found=1} else if (found) {print}}' CHANGELOG.md)" > body.txt
-          echo "body=$(awk 'NR == NR_F {printf "%s", $0} NR != NR_F {printf "%s\\\n", $0}' NR_F=$(wc -l < body.txt) body.txt)" >> "$GITHUB_OUTPUT"
+      - name: Upload changelog body
+        uses: actions/upload-artifact@v4
+        with:
+          name: body
+          path: ./body.txt
 
   release:
     runs-on: ubuntu-latest
@@ -54,6 +57,12 @@ jobs:
           path: product
           pattern: gemini-*
           merge-multiple: false
+      - name: Download Changelog Body
+        uses: actions/download-artifact@v4
+        with:
+          path: product
+          pattern: body
+          merge-multiple: true
       - name: compress
         run: |
           for dir in product/*/; do
@@ -67,8 +76,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           name: ${{ needs.read-changelog.outputs.title }}
-          body: ${{ needs.read-changelog.outputs.body }}
+          body: ./product/body.txt
           draft: false
           fail_on_unmatched_files: true
           prerelease: false
-          files: product/*.zip
+          files: ./product/*.zip
