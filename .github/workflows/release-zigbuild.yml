@@ -43,7 +43,7 @@ jobs:
           echo "$(awk '/^#[^#]/{if (flag) exit; flag=1; next} flag {if ($0 ~ /\S/) {print; found=1} else if (found) {print}}' CHANGELOG.md)" > body.txt
       - name: compress
         run: |
-          for dir in */; do
+          for dir in product/*/; do
               dirname="${dir%/}"
               if [[ $dirname == *"windows"* ]]; then
                   echo "package $dirname to $dirname.zip"
@@ -53,7 +53,6 @@ jobs:
                   tar -czf "$dirname.tar.gz" "$dirname"
               fi
           done
-
       - name: List Directory
         run: ls -R product
       - name: Upload Release
@@ -66,4 +65,4 @@ jobs:
           draft: false
           fail_on_unmatched_files: true
           prerelease: false
-          files: ./product/*.zip
+          files: ./product/*.(zip|tar.gz)
