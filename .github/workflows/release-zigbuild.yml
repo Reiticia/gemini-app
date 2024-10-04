@@ -40,9 +40,9 @@ jobs:
           path: product
           pattern: gemini-*
           merge-multiple: false
-      - name: compress 
+      - name: compress
         run: |
-          for dir in */; do
+          for dir in product/*/; do
             zip -r "${dir%/}.zip" "$dir"
           done
       - name: List Directory
@@ -50,7 +50,8 @@ jobs:
       - name: read CHANGELOG.md to outputs
         run: |
           echo "title=$(awk '/^#[^#]/{sub(/^# /, ""); print; exit}' CHANGELOG.md)" >> "$GITHUB_OUTPUT"
-          echo "body=$(awk '/^#[^#]/{if (flag) exit; flag=1; next} flag {if ($0 ~ /\S/) {print; found=1} else if (found) {print}}' CHANGELOG.md)" >> "$GITHUB_OUTPUT"
+          echo "$(awk '/^#[^#]/{if (flag) exit; flag=1; next} flag {if ($0 ~ /\S/) {print; found=1} else if (found) {print}}' CHANGELOG.md)" >> body.txt
+          echo "body=$(awk '{printf "%s\\n", $0}' body.txt)" >> "$GITHUB_OUTPUT"
       - name: Upload Release
         uses: softprops/action-gh-release@v1
         env:
@@ -61,9 +62,4 @@ jobs:
           draft: false
           fail_on_unmatched_files: true
           prerelease: false
-          files: product/*
-
-        
-
-
-    
+          files: product/*.zip
