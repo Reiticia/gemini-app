@@ -14,6 +14,9 @@
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <https://www.gnu.org/licenses/>.
 -->
+# Version 0.5.1 (2024-10-04)
+
+test
 
 # Version 0.5.0 (2024-10-03)
 

@@ -41,5 +41,5 @@ jobs:
       - name: Upload product as an artifact
         uses: actions/upload-artifact@v4
         with:
-          name: gemini
+          name: gemini-${{ inputs.target }}
           path: ./target/${{ inputs.target }}/release/${{ matrix.product }}
