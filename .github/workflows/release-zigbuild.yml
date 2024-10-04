@@ -38,8 +38,8 @@ jobs:
         id: read
         run: |
           echo "title=$(awk '/^#[^#]/{sub(/^# /, ""); print; exit}' CHANGELOG.md)" >> "$GITHUB_OUTPUT"
-          echo "$(awk '/^#[^#]/{if (flag) exit; flag=1; next} flag {if ($0 ~ /\S/) {print; found=1} else if (found) {print}}' CHANGELOG.md)" >> body.txt
-          echo "body=$(awk '{printf "%s\\n", $0}' body.txt)" >> "$GITHUB_OUTPUT"
+          echo "$(awk '/^#[^#]/{if (flag) exit; flag=1; next} flag {if ($0 ~ /\S/) {print; found=1} else if (found) {print}}' CHANGELOG.md)" > body.txt
+          echo "body=$(awk 'NR == NR_F {printf "%s", $0} NR != NR_F {printf "%s\\\n", $0}' NR_F=$(wc -l < body.txt) body.txt)" >> "$GITHUB_OUTPUT"
 
   release:
     runs-on: ubuntu-latest
