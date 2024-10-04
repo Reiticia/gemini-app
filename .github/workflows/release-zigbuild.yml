@@ -39,7 +39,7 @@ jobs:
       - name: read CHANGELOG.md
         id: read
         run: |
-          echo "title=$(awk '/^#[^#]/{sub(/^# /, ""); print; exit}' CHANGELOG.md)" >> "$GITHUB_ENV"
+          echo "TITLE=$(awk '/^#[^#]/{sub(/^# /, ""); print; exit}' CHANGELOG.md)" >> "$GITHUB_ENV"
           echo "$(awk '/^#[^#]/{if (flag) exit; flag=1; next} flag {if ($0 ~ /\S/) {print; found=1} else if (found) {print}}' CHANGELOG.md)" > body.txt
       - name: compress
         run: |
@@ -53,7 +53,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          name: $title
+          name: ${{ env.TITLE }}
           body_path: ./body.txt
           draft: false
           fail_on_unmatched_files: true
