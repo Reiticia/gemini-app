@@ -65,4 +65,6 @@ jobs:
           draft: false
           fail_on_unmatched_files: true
           prerelease: false
-          files: ./product/*.(zip|tar.gz)
+          files: |
+            ./product/*.zip
+            ./product/*.tar.gz
